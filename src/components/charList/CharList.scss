@@ -1,0 +1,45 @@
+@import '../../style/variables.scss';
+
+.charList {
+    width: 650px;
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    &__item {
+        width: 200px;
+        height: 318px;
+        margin-bottom: 30px;
+        cursor: pointer;
+        transition: 0.2s all;
+        box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.25);
+        &-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+        &-info {
+            background-color: $dark;
+            width: 200px;
+            height: 118px;
+            margin-top: -4px;
+            padding: 15px 0 0 15px;
+        }
+        &-name {
+            color: #FFF;
+            font-family: Roboto Condensed;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        &:focus {
+            box-shadow: 5px 5px 20px 0px $main-color;
+            transform: translateY(-8px);
+        }
+    }
+    .button-main {
+        display: block;
+        margin: 0 auto;
+        margin-top: 15px;
+    }
+}

@@ -1,0 +1,46 @@
+@import '../../style/variables.scss';
+
+.singleComic {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 293px 550px auto;
+    column-gap: 50px;
+    &-img {
+        width: 293px;
+        height: 450px;
+        object-fit: cover;
+    }
+    &__info {
+        display: grid;
+        grid-template-rows: min-content min-content min-content min-content;
+        row-gap: 25px;
+        &-name {
+            font-family: Roboto Condensed;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 22px;
+        }
+        &-text, &-lang, &-pages {
+            font-family: Roboto Condensed;
+            font-size: 18px;
+            font-weight: 400;
+        }
+        &-price {
+            color: $main-color;
+            font-family: Roboto Condensed;
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+    &-goBack {
+        height: 20px;
+        text-align: end;
+        font-family: Roboto Condensed;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

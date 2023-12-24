@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+@import '../../style/btns.scss';
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    position: relative;
+    padding: 50px 0 45px 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1100px;
+}
+
+.character {
+    margin-top: 53px;
+    display: flex;
+    gap: 25px;
+    z-index: 999;
+}
+
+.bg-decoration {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
+}

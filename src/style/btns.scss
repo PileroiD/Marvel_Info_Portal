@@ -1,0 +1,75 @@
+@import './variables.scss';
+
+.button {
+    &-main {
+        width: 101px;
+        height: 38px;
+        background: $main-color;
+        color: #FFF;
+        font-family: Roboto Condensed;
+        font-size: 14px;
+        font-weight: 400;
+        border: none;
+        position: relative;
+        cursor: pointer;
+        transition: 0.4s all;
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+        &::before {
+            content: '';
+            display: block;
+            height: 15px;
+            width: 15px;
+            transition: none;
+            background-color: #fff;
+            position: absolute;
+            top: -3px;
+            left: -7px;
+            transform: skew(-45deg);
+        }
+        &::after {
+            content: '';
+            display: block;
+            height: 15px;
+            width: 15px;
+            transition: none;
+            background-color: #fff;
+            position: absolute;
+            bottom: -3px;
+            right: -7px;
+            transform: skew(-45deg); 
+        }
+        &:hover {
+            border: 1px solid $main-color;
+            background-color: #fff;
+            color: $main-color;
+            a {
+                color: $main-color;
+            }
+        }
+    }
+}
+
+.button-main.gray {
+    background: $gray;
+    &:hover {
+        background-color: #fff;
+    }
+}
+
+.button-main.bgGray {
+    &::before, &:after {
+        background: $dark;
+    }
+    &:hover {
+        background: $dark;
+        border: 1px solid #fff;
+        color: #fff;
+    }
+}
+
+.button-main.long {
+    width: 170px;
+}

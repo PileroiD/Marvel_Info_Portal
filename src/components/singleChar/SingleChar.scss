@@ -1,0 +1,22 @@
+.singleChar {
+    margin-top: 50px;
+    display: flex;
+    gap: 50px;
+    &-img {
+        width: 293px;
+        height: 293px;
+        object-fit: cover;
+    }
+    &-name {
+        font-family: Roboto Condensed;
+        font-size: 22px;
+        font-weight: 700;
+    }
+    &-text {
+        font-family: Roboto Condensed;
+        font-size: 18px;
+        font-weight: 400;
+        width: 550px;
+        margin-top: 25px;
+    }
+}

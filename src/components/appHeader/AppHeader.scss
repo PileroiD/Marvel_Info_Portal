@@ -1,0 +1,32 @@
+@import '../../style/variables.scss';
+
+.appHeader {
+    display: flex;
+    justify-content: space-between;
+    &-text {
+        color: #000;
+        font-family: Roboto Condensed;
+        font-size: 28px;
+        font-weight: 700;
+        span {
+            color: $main-color;
+        }
+    }
+    &-links {
+        display: flex;
+        gap: 8px;
+        font-size: 24px;
+    }
+    &-link {
+        color: $main-color;
+        font-family: Roboto Condensed;
+        font-weight: 700;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    &-link:last-child {
+        color: $dark;
+    }
+}
