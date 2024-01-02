@@ -1,105 +1,82 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
+import "./RandomChar.scss";
+
+import useMarvelService from "../../services/MarvelService";
+
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
-import MarvelService from "../../services/MarvelService";
+const RandomChar = () => {
+    const [char, setChar] = useState({});
+    const { loading, error, getCharacter, clearError } = useMarvelService();
 
-import "./RandomChar.scss";
+    useEffect(() => {
+        updateChar();
+        // const timerId = setInterval(updateChar, 5000);
 
-class RandomChar extends Component {
-    state = {
-        char: {},
-        loading: true,
-        error: false,
+        // return () => {
+        //     clearInterval(timerId);
+        // };
+    }, []);
+
+    const onCharLoaded = (char) => {
+        setChar(char);
     };
 
-    marvelService = new MarvelService();
-
-    componentDidMount = () => {
-        this.updateChar();
-        // this.timerId = setInterval(this.updateChar, 5000);
-    };
-
-    componentWillUnmount = () => {
-        clearInterval(this.timerId);
-    };
-
-    onCharLoaded = (char) => {
-        this.setState({ char, loading: false, error: false });
-        clearTimeout(this.timeoutIdAfterError);
-    };
-
-    onCharLoading = () => {
-        this.setState({
-            loading: true,
-        });
-    };
-
-    updateChar = () => {
+    const updateChar = () => {
+        clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.onCharLoading();
-        this.marvelService
-            .getCharacter(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+        getCharacter(id).then((character) => onCharLoaded(character));
     };
 
-    onError = () => {
-        this.setState({ loading: false, error: true });
-        this.timeoutIdAfterError = setTimeout(() => this.updateChar, 5000);
+    const onClickChangeChar = () => {
+        updateChar();
     };
 
-    onClickChangeChar = () => {
-        this.updateChar();
-        clearInterval(this.timerId);
-    };
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = !(loading || error) ? <View char={char} /> : null;
 
-    render() {
-        const { char, loading, error } = this.state;
-
-        const errorMessage = error ? <ErrorMessage /> : null;
-        const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <View char={char} /> : null;
-
-        return (
-            <div className="random">
-                <div className="randomChar">
-                    {errorMessage}
-                    {spinner}
-                    {content}
-                </div>
-
-                <div className="randomChange">
-                    <div className="randomChange-text">
-                        Random character for today! <br /> Do you want to get to
-                        know him better?
-                    </div>
-                    <div className="randomChange-text text-2">
-                        Or choose another one
-                    </div>
-                    <button
-                        onClick={this.onClickChangeChar}
-                        className="button-main bgGray"
-                    >
-                        TRY IT
-                    </button>
-                    <img
-                        src="/img/mjolnir.png"
-                        alt="mjolnir"
-                        className="randomChange-img"
-                    />
-                </div>
+    return (
+        <div className="random">
+            <div className="randomChar">
+                {errorMessage}
+                {spinner}
+                {content}
             </div>
-        );
-    }
-}
+
+            <div className="randomChange">
+                <div className="randomChange-text">
+                    Random character for today! <br /> Do you want to get to
+                    know him better?
+                </div>
+                <div className="randomChange-text text-2">
+                    Or choose another one
+                </div>
+                <button
+                    onClick={onClickChangeChar}
+                    className="button-main bgGray"
+                >
+                    TRY IT
+                </button>
+                <img
+                    src="/img/mjolnir.png"
+                    alt="mjolnir"
+                    className="randomChange-img"
+                />
+            </div>
+        </div>
+    );
+};
 
 const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki } = char;
 
-    const imgFit = thumbnail.includes("image_not_available.jpg")
-        ? { objectFit: "contain" }
-        : { objectFit: "cover" };
+    const imgFit = thumbnail
+        ? thumbnail.includes("image_not_available.jpg")
+            ? { objectFit: "contain" }
+            : { objectFit: "cover" }
+        : null;
 
     const checkDescription = (descr) => {
         return descr

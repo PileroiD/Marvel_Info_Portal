@@ -1,56 +1,54 @@
+import { useState } from "react";
+
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import FindChar from "../findChar/FindChar";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
-
-import { Component } from "react";
+import ComicList from "../comicList/ComicList";
+import AppBanner from "../appBanner/AppBanner";
 
 import "./App.scss";
 
-class App extends Component {
-    state = {
-        selectedChar: null,
+const App = () => {
+    const [selectedChar, setSelectedChar] = useState(null);
+
+    const onCharSelected = (id) => {
+        setSelectedChar(id);
     };
 
-    onCharSelected = (id) => {
-        this.setState({ selectedChar: id });
-    };
-
-    render() {
-        return (
-            <div className="app">
-                <div className="container">
-                    <AppHeader />
-                    {/* <AppBanner /> */}
+    return (
+        <div className="app">
+            <div className="container">
+                <AppHeader />
+                {/* <AppBanner /> */}
+                <ErrorBoundary>
+                    <RandomChar />
+                </ErrorBoundary>
+                <div className="character">
                     <ErrorBoundary>
-                        <RandomChar />
+                        <CharList onCharSelected={onCharSelected} />
                     </ErrorBoundary>
-                    <div className="character">
+                    <div className="character__info">
                         <ErrorBoundary>
-                            <CharList onCharSelected={this.onCharSelected} />
+                            <CharInfo charId={selectedChar} />
                         </ErrorBoundary>
-                        <div className="character__info">
-                            <ErrorBoundary>
-                                <CharInfo charId={this.state.selectedChar} />
-                            </ErrorBoundary>
-                            <FindChar />
-                        </div>
+                        <FindChar />
                     </div>
-                    <img
-                        className="bg-decoration"
-                        src="/img/vision.png"
-                        alt="vision"
-                    />
-
-                    {/* <ComicList /> */}
-                    {/* <SingleComic /> */}
-                    {/* <SingleChar /> */}
                 </div>
+                {/* <ComicList /> */}
+                <img
+                    className="bg-decoration"
+                    src="/img/vision.png"
+                    alt="vision"
+                />
+
+                {/* <SingleComic /> */}
+                {/* <SingleChar /> */}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default App;
