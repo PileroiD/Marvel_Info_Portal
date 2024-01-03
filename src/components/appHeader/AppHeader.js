@@ -1,5 +1,7 @@
 import "./AppHeader.scss";
 
+import { NavLink } from "react-router-dom";
+
 const AppHeader = () => {
     return (
         <div className="appHeader">
@@ -7,13 +9,24 @@ const AppHeader = () => {
                 <span>Marvel</span> information portal
             </div>
             <div className="appHeader-links">
-                <a href="#" className="appHeader-link">
+                <NavLink
+                    to="/"
+                    end
+                    className={({ isActive }) =>
+                        "appHeader-link" + (isActive ? " active" : "")
+                    }
+                >
                     Characters
-                </a>
+                </NavLink>
                 /
-                <a href="#" className="appHeader-link">
+                <NavLink
+                    to="/comics"
+                    className={({ isActive }) =>
+                        "appHeader-link" + (isActive ? " active" : "")
+                    }
+                >
                     Comics
-                </a>
+                </NavLink>
             </div>
         </div>
     );

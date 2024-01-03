@@ -92,8 +92,6 @@ const CharList = ({ onCharSelected }) => {
         };
     }
 
-    console.log("render");
-
     return (
         <div className="charList" style={charListStyles}>
             {spinner}

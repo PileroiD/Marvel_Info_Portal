@@ -18,7 +18,7 @@
         font-size: 24px;
     }
     &-link {
-        color: $main-color;
+        color: $dark;
         font-family: Roboto Condensed;
         font-weight: 700;
         text-decoration: none;
@@ -26,7 +26,7 @@
             text-decoration: underline;
         }
     }
-    &-link:last-child {
-        color: $dark;
+    &-link.active {
+        color: $main-color;
     }
 }
