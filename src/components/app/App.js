@@ -1,9 +1,16 @@
+import "./App.scss";
+
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
-import { MainPage, ComicsPage, Page404, SingleComicPage } from "../pages";
+import Spinner from "../spinner/Spinner";
+// import { MainPage, ComicsPage, SingleComicPage } from "../pages";
 
-import "./App.scss";
+const Page404 = lazy(() => import("../pages/404"));
+const MainPage = lazy(() => import("../pages/MainPage"));
+const ComicsPage = lazy(() => import("../pages/ComicsPage"));
+const SingleComicPage = lazy(() => import("../pages/SingleComicPage"));
 
 const App = () => {
     return (
@@ -12,15 +19,17 @@ const App = () => {
                 <div className="container">
                     <AppHeader />
 
-                    <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route path="/comics" element={<ComicsPage />} />
-                        <Route
-                            path="/comics/:id"
-                            element={<SingleComicPage />}
-                        />
-                        <Route path="*" element={<Page404 />} />
-                    </Routes>
+                    <Suspense fallback={<Spinner />}>
+                        <Routes>
+                            <Route path="/" element={<MainPage />} />
+                            <Route path="/comics" element={<ComicsPage />} />
+                            <Route
+                                path="/comics/:id"
+                                element={<SingleComicPage />}
+                            />
+                            <Route path="*" element={<Page404 />} />
+                        </Routes>
+                    </Suspense>
                     <img
                         className="bg-decoration"
                         src="/img/vision.png"

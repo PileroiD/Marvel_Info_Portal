@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Transition } from "react-transition-group";
 import PropTypes from "prop-types";
 import "./CharList.scss";
 
@@ -23,7 +24,7 @@ const CharList = ({ onCharSelected }) => {
         getAllCharacters(offset).then(onCharactersLoaded);
     };
 
-    const onCharactersLoaded = (newCharList) => {
+    const onCharactersLoaded = async (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
