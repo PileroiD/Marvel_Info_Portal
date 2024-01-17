@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Transition } from "react-transition-group";
 import PropTypes from "prop-types";
 import "./CharList.scss";
 
@@ -7,13 +6,28 @@ import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 import useMarvelService from "../../services/MarvelService";
 
+const setContent = (process, Component, newItemsLoading) => {
+    switch (process) {
+        case "waiting":
+            return <Spinner />;
+        case "loading":
+            return newItemsLoading ? <Component /> : <Spinner />;
+        case "confirmed":
+            return <Component />;
+        case "error":
+            return <ErrorMessage />;
+        default:
+            throw new Error("Unexpected process state");
+    }
+};
+
 const CharList = ({ onCharSelected }) => {
     const [charList, setCharList] = useState([]);
     const [newItemsLoading, setNewItemsLoading] = useState(false);
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
 
-    const { loading, error, getAllCharacters } = useMarvelService();
+    const { getAllCharacters, process, setProcess } = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -21,7 +35,9 @@ const CharList = ({ onCharSelected }) => {
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemsLoading(false) : setNewItemsLoading(true);
-        getAllCharacters(offset).then(onCharactersLoaded);
+        getAllCharacters(offset)
+            .then(onCharactersLoaded)
+            .then(() => setProcess("confirmed"));
     };
 
     const onCharactersLoaded = async (newCharList) => {
@@ -79,13 +95,12 @@ const CharList = ({ onCharSelected }) => {
         });
     };
 
-    const items = createItems(charList);
-
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading && !newItemsLoading ? <Spinner /> : null;
+    // const items = createItems(charList);
+    // const errorMessage = error ? <ErrorMessage /> : null;
+    // const spinner = loading && !newItemsLoading ? <Spinner /> : null;
 
     let charListStyles = {};
-    if (errorMessage || spinner) {
+    if (process === "confirmed") {
         charListStyles = {
             display: "flex",
             flexDirection: "column",
@@ -95,9 +110,19 @@ const CharList = ({ onCharSelected }) => {
 
     return (
         <div className="charList" style={charListStyles}>
-            {spinner}
-            {errorMessage}
-            {items && <div className="charList__wrapper">{items}</div>}
+            {/* {spinner}
+            {errorMessage} */}
+            {/* {items && <div className="charList__wrapper">{items}</div>} */}
+
+            {setContent(
+                process,
+                () => (
+                    <div className="charList__wrapper">
+                        {createItems(charList)}
+                    </div>
+                ),
+                newItemsLoading
+            )}
             <button
                 disabled={newItemsLoading}
                 onClick={() => onRequest(offset, false)}

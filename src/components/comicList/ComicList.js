@@ -6,13 +6,29 @@ import useMarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 
+const setContent = (process, Component, newItemsLoading) => {
+    switch (process) {
+        case "waiting":
+            return <Spinner />;
+        case "loading":
+            return newItemsLoading ? <Component /> : <Spinner />;
+        case "confirmed":
+            return <Component />;
+        case "error":
+            return <ErrorMessage />;
+        default:
+            throw new Error("Unexpected process state");
+    }
+};
+
 const ComicList = () => {
     const [comicsList, setComicsList] = useState([]);
     const [newItemsLoading, setNewItemsLoading] = useState(false);
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const { loading, error, getAllComics, clearError } = useMarvelService();
+    const { getAllComics, clearError, process, setProcess } =
+        useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -22,7 +38,9 @@ const ComicList = () => {
         initial ? setNewItemsLoading(false) : setNewItemsLoading(true);
 
         clearError();
-        getAllComics(offset).then(onComicsLoaded);
+        getAllComics(offset)
+            .then(onComicsLoaded)
+            .then(() => setProcess("confirmed"));
     };
 
     const onComicsLoaded = (newComicsList) => {
@@ -66,20 +84,27 @@ const ComicList = () => {
         });
     };
 
-    const items = createItems(comicsList);
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading && !newItemsLoading ? <Spinner /> : null;
+    // const items = createItems(comicsList);
+    // const errorMessage = error ? <ErrorMessage /> : null;
+    // const spinner = loading && !newItemsLoading ? <Spinner /> : null;
 
-    const wrapperDisplayStyle = loading
-        ? { display: "flex", flexWrap: "wrap" }
-        : { display: "grid" };
+    const wrapperDisplayStyle =
+        process === "loading"
+            ? { display: "flex", flexWrap: "wrap" }
+            : { display: "grid" };
 
     return (
         <div className="comicList">
             <div className="comicList-wrapper" style={wrapperDisplayStyle}>
-                {spinner}
+                {/* {spinner}
                 {errorMessage}
-                {items}
+                {items} */}
+
+                {setContent(
+                    process,
+                    () => createItems(comicsList),
+                    newItemsLoading
+                )}
             </div>
             <button
                 disabled={newItemsLoading}

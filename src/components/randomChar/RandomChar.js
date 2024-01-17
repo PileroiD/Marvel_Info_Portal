@@ -3,12 +3,12 @@ import "./RandomChar.scss";
 
 import useMarvelService from "../../services/MarvelService";
 
-import Spinner from "../spinner/Spinner";
-import ErrorMessage from "../errorMessage/ErrorMessage";
+import setContent from "../../utils/setContent";
 
 const RandomChar = () => {
     const [char, setChar] = useState({});
-    const { loading, error, getCharacter, clearError } = useMarvelService();
+    const { getCharacter, clearError, process, setProcess } =
+        useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -26,23 +26,27 @@ const RandomChar = () => {
     const updateChar = () => {
         clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        getCharacter(id).then((character) => onCharLoaded(character));
+        getCharacter(id)
+            .then((character) => onCharLoaded(character))
+            .then(() => setProcess("confirmed"));
     };
 
     const onClickChangeChar = () => {
         updateChar();
     };
 
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error) ? <View char={char} /> : null;
+    // const errorMessage = error ? <ErrorMessage /> : null;
+    // const spinner = loading ? <Spinner /> : null;
+    // const content = !(loading || error) ? <View char={char} /> : null;
 
     return (
         <div className="random">
             <div className="randomChar">
-                {errorMessage}
+                {/* {errorMessage}
                 {spinner}
-                {content}
+                {content} */}
+
+                {setContent(process, View, char)}
             </div>
 
             <div className="randomChange">
@@ -69,8 +73,8 @@ const RandomChar = () => {
     );
 };
 
-const View = ({ char }) => {
-    const { name, description, thumbnail, homepage, wiki } = char;
+const View = ({ data }) => {
+    const { name, description, thumbnail, homepage, wiki } = data;
 
     const imgFit = thumbnail
         ? thumbnail.includes("image_not_available.jpg")

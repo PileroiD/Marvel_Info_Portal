@@ -1,5 +1,7 @@
+import { Helmet } from "react-helmet";
+
 import { Link } from "react-router-dom";
-import "../SingleCharacterLayout/SingleCharacterLayout.scss";
+import "../SingleComicLayout/SingleComicLayout.scss";
 import "./SingleCharacterLayout.scss";
 
 const SingleCharacterLayout = ({ data }) => {
@@ -7,6 +9,10 @@ const SingleCharacterLayout = ({ data }) => {
 
     return (
         <>
+            <Helmet>
+                <meta name="description" content={`${name} character`} />
+                <title>{name}</title>
+            </Helmet>
             <img
                 src={thumbnail}
                 alt={name}
