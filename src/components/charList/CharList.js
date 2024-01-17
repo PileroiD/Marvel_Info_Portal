@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "./CharList.scss";
 
@@ -108,21 +108,23 @@ const CharList = ({ onCharSelected }) => {
         };
     }
 
+    const elements = useMemo(() => {
+        return setContent(
+            process,
+            () => (
+                <div className="charList__wrapper">{createItems(charList)}</div>
+            ),
+            newItemsLoading
+        );
+    }, [process]);
+
     return (
         <div className="charList" style={charListStyles}>
             {/* {spinner}
             {errorMessage} */}
             {/* {items && <div className="charList__wrapper">{items}</div>} */}
 
-            {setContent(
-                process,
-                () => (
-                    <div className="charList__wrapper">
-                        {createItems(charList)}
-                    </div>
-                ),
-                newItemsLoading
-            )}
+            {elements}
             <button
                 disabled={newItemsLoading}
                 onClick={() => onRequest(offset, false)}
