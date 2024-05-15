@@ -4,6 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 const AppHeader = () => {
     const location = useLocation();
+
     return (
         <div className="appHeader">
             <div className="appHeader-text">
